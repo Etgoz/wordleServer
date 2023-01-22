@@ -1,5 +1,3 @@
-import { theWord } from "./app";
-
 export interface IGussedLetters {
 	bull: string[];
 	cow: string[];
@@ -10,6 +8,11 @@ export interface IRefMatrix {
 	content: string;
 	status: string;
 	//status: empty / wrong / cow / bull
+}
+
+export interface ICheckWord {
+	winIndicator: boolean;
+	statusArray: string[];
 }
 
 function switchFinalLetters(str: string): string {
@@ -40,14 +43,6 @@ function switchFinalLetters(str: string): string {
 	return str;
 }
 
-export interface ICheckWord {
-	winIndicator: boolean;
-	activeGame: boolean;
-	matrixRowNumber: number;
-	matrixRowContent: IRefMatrix[];
-	guessedLetters: IGussedLetters;
-}
-
 /**
  * check if the user's guess matches the secret word
  *
@@ -56,58 +51,26 @@ export interface ICheckWord {
  * @param guessedLetters
  * @returns
  */
-export function checkWord(
-	userGuess: IRefMatrix[],
-	curRow: number,
-	guessedLetters: IGussedLetters
-): ICheckWord {
-	const checkedRow = [...userGuess];
-	const guessed = { ...guessedLetters };
+export function checkWord(userGuess: string, theWord: string): ICheckWord {
+	const statusArray: string[] = [];
 
-	for (let i = 0; i < 5; i++) {
-		const checkedLetter = switchFinalLetters(checkedRow[i].content);
-		const theWordCurLetter = switchFinalLetters(theWord[i]);
-		const theWordNoFinals = switchFinalLetters(theWord);
-		if (checkedLetter === theWordCurLetter) {
-			checkedRow[i].status = "bull";
-			guessed.bull.push(checkedLetter);
-		} else if (theWordNoFinals.includes(checkedLetter)) {
-			checkedRow[i].status = "cow";
-			guessed.cow.push(checkedLetter);
+	const winIndicator = userGuess === theWord;
+
+	const userGuessNoFinals = switchFinalLetters(userGuess);
+	const theWordNoFinals = switchFinalLetters(theWord);
+
+	Array.from(userGuessNoFinals).forEach((char, i) => {
+		if (char === theWordNoFinals[i]) {
+			statusArray.push("bull");
+		} else if (char !== theWordNoFinals[i] && theWordNoFinals.includes(char)) {
+			statusArray.push("cow");
 		} else {
-			checkedRow[i].status = "wrong";
-			guessed.wrong.push(checkedLetter);
+			statusArray.push("wrong");
 		}
-	}
-	let guessString = "";
-	for (let i = 0; i < 5; i++) {
-		guessString += checkedRow[i].content;
-	}
-	if (guessString === theWord) {
-		console.log("success");
-		return {
-			winIndicator: true,
-			activeGame: false,
-			matrixRowNumber: curRow,
-			matrixRowContent: checkedRow,
-			guessedLetters: guessed,
-		};
-	} else if (curRow === 5 && guessString !== theWord) {
-		console.log("fail");
-		return {
-			winIndicator: false,
-			activeGame: false,
-			matrixRowNumber: curRow,
-			matrixRowContent: checkedRow,
-			guessedLetters: guessed,
-		};
-	} else {
-		return {
-			winIndicator: false,
-			activeGame: true,
-			matrixRowNumber: curRow,
-			matrixRowContent: checkedRow,
-			guessedLetters: guessed,
-		};
-	}
+	});
+
+	return {
+		winIndicator,
+		statusArray,
+	};
 }

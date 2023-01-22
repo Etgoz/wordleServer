@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
-import bodyParser from "body-parser";
-import { checkWord, IGussedLetters, IRefMatrix, ICheckWord } from "./checkWord";
+import { checkWord, ICheckWord } from "./checkWord";
 
 const server = express();
 const port = 3001;
@@ -17,35 +16,32 @@ export const wordBank = [
 	"וירוס",
 	"מילים",
 	"ארגון",
+	"אתמול",
+	"מחמצת",
 ];
 
-interface ICheckWordParams {
-	userGuess: IRefMatrix[];
-	curRow: number;
-	guessedLetters: IGussedLetters;
-}
-
 server.use(cors());
+server.use(express.json());
 
 function getRandomElement<T>(arr: T[]): T {
 	return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export let theWord = "";
+export let theWord = getRandomElement(wordBank);
 
-server.get("/word", (req: Request, res: Response) => {
+server.get("/newWord", (req: Request, res: Response) => {
 	theWord = getRandomElement(wordBank);
-	res.send(theWord);
+	res.status(200).send(theWord);
 });
 
-server.post("/checkWord", bodyParser, (req: Request, res: Response) => {
-	const data: ICheckWordParams = req.body;
+server.get("/word", (req: Request, res: Response) => {
+	res.status(200).send(theWord);
+});
+
+server.post("/checkWord", (req: Request, res: Response) => {
+	const data = req.body;
 	try {
-		const checkResult: ICheckWord = checkWord(
-			data.userGuess,
-			data.curRow,
-			data.guessedLetters
-		);
+		const checkResult: ICheckWord = checkWord(data.userGuess, theWord);
 		res.json(checkResult);
 	} catch (e) {
 		res.status(400).send({ message: "error" });
