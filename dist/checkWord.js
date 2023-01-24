@@ -1,25 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkWord = void 0;
+const app_1 = require("./app");
 function switchFinalLetters(str) {
     let char = str.substring(str.length - 1);
-    let replaceLetter = "";
-    if ("ךםןץף".includes(char)) {
+    let replaceLetter = '';
+    if ('ךםןץף'.includes(char)) {
         switch (char) {
-            case "ך":
-                replaceLetter = "כ";
+            case 'ך':
+                replaceLetter = 'כ';
                 break;
-            case "ם":
-                replaceLetter = "מ";
+            case 'ם':
+                replaceLetter = 'מ';
                 break;
-            case "ן":
-                replaceLetter = "נ";
+            case 'ן':
+                replaceLetter = 'נ';
                 break;
-            case "ף":
-                replaceLetter = "פ";
+            case 'ף':
+                replaceLetter = 'פ';
                 break;
-            case "ץ":
-                replaceLetter = "צ";
+            case 'ץ':
+                replaceLetter = 'צ';
                 break;
         }
         const newStr = str.replace(char, replaceLetter);
@@ -35,20 +36,21 @@ function switchFinalLetters(str) {
  * @param guessedLetters
  * @returns
  */
-function checkWord(userGuess, theWord) {
+function checkWord(userGuess, wordNum) {
+    const theWord = app_1.wordBank[wordNum];
     const statusArray = [];
     const winIndicator = userGuess === theWord;
     const userGuessNoFinals = switchFinalLetters(userGuess);
     const theWordNoFinals = switchFinalLetters(theWord);
     Array.from(userGuessNoFinals).forEach((char, i) => {
         if (char === theWordNoFinals[i]) {
-            statusArray.push("bull");
+            statusArray.push('bull');
         }
         else if (char !== theWordNoFinals[i] && theWordNoFinals.includes(char)) {
-            statusArray.push("cow");
+            statusArray.push('cow');
         }
         else {
-            statusArray.push("wrong");
+            statusArray.push('wrong');
         }
     });
     return {
