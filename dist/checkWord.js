@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkWord = void 0;
 const app_1 = require("./app");
 function switchFinalLetters(str) {
-    let char = str.substring(str.length - 1);
+    const char = str.substring(str.length - 1);
     let replaceLetter = '';
     if ('ךםןץף'.includes(char)) {
         switch (char) {

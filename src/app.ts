@@ -5,7 +5,7 @@ import { checkWord, ICheckWord } from './checkWord';
 const server = express();
 const port = 3001;
 
-export const wordBank = ['אלבום', 'קליפה', 'פריצה', 'פתאום', 'ביטוח', 'סידור', 'הבטחה', 'וירוס', 'מילים', 'ארגון', 'אתמול', 'מחמצת', 'תמריץ'];
+export const wordBank = ['אלבום', 'קליפה', 'פריצה', 'פתאום', 'ביטוח', 'סידור', 'הבטחה', 'וירוס', 'מילים', 'ארגון', 'אתמול', 'מחמצת', 'תמריץ', 'תרגיל', 'ניתוח'];
 
 server.use(cors());
 server.use(express.json());
