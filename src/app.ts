@@ -3,12 +3,16 @@ import cors from 'cors';
 import { checkWord, ICheckWord } from './checkWord';
 
 const server = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 export const wordBank = ['אלבום', 'קליפה', 'פריצה', 'פתאום', 'ביטוח', 'סידור', 'הבטחה', 'וירוס', 'מילים', 'ארגון', 'אתמול', 'מחמצת', 'תמריץ', 'תרגיל', 'ניתוח'];
 
 server.use(cors());
 server.use(express.json());
+
+server.get('/', (req: Request, res: Response) => {
+  res.send('server is running');
+});
 
 server.get('/wordnum', (req: Request, res: Response) => {
   res.status(200).send(String(Math.floor(Math.random() * wordBank.length)));
@@ -30,5 +34,5 @@ server.post('/checkWord', (req: Request, res: Response) => {
 });
 
 server.listen(port, () => {
-  console.log(`server is listening in http://localhost:${port}`);
+  console.log(`server is listening in https://wordleserver-production.up.railway.app/${port}`);
 });
