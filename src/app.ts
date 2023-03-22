@@ -34,5 +34,5 @@ server.post('/checkWord', (req: Request, res: Response) => {
 });
 
 server.listen(port, () => {
-  console.log(`server is listening in https://wordleserver-production.up.railway.app/${port}`);
+  console.log(`server is listening in https://wordleserver-production.up.railway.app`);
 });

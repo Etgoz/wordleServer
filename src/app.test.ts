@@ -2,9 +2,12 @@ import request from 'supertest';
 import { expect } from 'chai';
 import { wordBank } from './app';
 
+const URL = 'https://wordleserver-production.up.railway.app';
+const localURL = 'http://localhost/3001';
+
 describe('GET /wordnum', () => {
   it('should return a new random number', (done) => {
-    request('http://localhost:3001')
+    request(URL)
       .get('/wordnum')
       .expect(200)
       .expect('Content-Type', /text/)
@@ -22,7 +25,7 @@ describe('GET /wordnum', () => {
 
 describe(' GET /theword/:wordnum', () => {
   it('should return the word chosen randomly', (done) => {
-    request('http://localhost:3001')
+    request(URL)
       .get('/theword/0')
       .expect(200)
       .expect('Content-Type', /text/)
